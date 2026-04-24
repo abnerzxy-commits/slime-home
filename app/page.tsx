@@ -101,6 +101,17 @@ export default function Home() {
             </div>
           </Link>
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                searchRef.current?.focus();
+                searchRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+              }}
+              className="md:hidden p-2 rounded-lg cursor-pointer"
+              style={{ color: 'var(--color-fg-muted)' }}
+              aria-label="搜尋"
+            >
+              <Search className="w-4 h-4" />
+            </button>
             <kbd className="hidden md:inline-flex items-center gap-0.5 px-2 py-1 rounded-md text-[11px] font-semibold border" style={{ borderColor: 'var(--color-border)', color: 'var(--color-fg-muted)' }}>
               ⌘ K
             </kbd>
@@ -113,7 +124,7 @@ export default function Home() {
 
       {/* Hero — Editorial style with featured screenshot */}
       <header className="relative">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 sm:pt-20 pb-8 sm:pb-12">
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left: Headlines */}
             <div className="lg:col-span-6">
@@ -122,7 +133,7 @@ export default function Home() {
                 <span className="text-[11px] font-semibold">{sites.length} 個工具，全部免費</span>
               </div>
 
-              <h1 className="font-display text-[44px] sm:text-6xl lg:text-7xl leading-[0.95] tracking-tight mb-6">
+              <h1 className="font-display text-[36px] sm:text-6xl lg:text-7xl leading-[0.95] tracking-tight mb-4 sm:mb-6">
                 生活中需要的<br />
                 <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                   都在這裡
@@ -169,8 +180,8 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: Featured screenshot preview */}
-            <div className="lg:col-span-6 lg:pl-4">
+            {/* Right: Featured screenshot preview (hidden on mobile to reduce scroll) */}
+            <div className="hidden sm:block lg:col-span-6 lg:pl-4">
               <a
                 href="https://hospital.slime-tools.com"
                 className="article-featured block fade-up"
