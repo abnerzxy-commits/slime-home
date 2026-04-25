@@ -180,8 +180,9 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: Featured screenshot preview (hidden on mobile to reduce scroll) */}
-            <div className="hidden sm:block lg:col-span-6 lg:pl-4">
+            {/* Right: Featured screenshot preview (desktop: large card, mobile: horizontal scroll) */}
+            {/* Desktop */}
+            <div className="hidden lg:block lg:col-span-6 lg:pl-4">
               <a
                 href="https://hospital.slime-tools.com"
                 className="article-featured block fade-up"
@@ -193,13 +194,13 @@ export default function Home() {
                     width={1280}
                     height={720}
                     priority
-                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    sizes="50vw"
                   />
                 </div>
                 <div className="p-5 sm:p-6">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide" style={{ background: '#EF444415', color: '#EF4444', border: '1px solid #EF444430' }}>
-                      🔥 新上線
+                      新上線
                     </span>
                     <span className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-fg-subtle)' }}>
                       健康
@@ -217,6 +218,55 @@ export default function Home() {
                   </div>
                 </div>
               </a>
+            </div>
+
+            {/* Mobile: horizontal featured cards */}
+            <div className="lg:hidden -mx-4 px-4 mt-6">
+              <div className="flex gap-3 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2">
+                {featured.map((site) => (
+                  <a
+                    key={site.slug}
+                    href={site.url}
+                    className="mobile-featured-card snap-start shrink-0"
+                    style={{ width: "75vw", maxWidth: "300px" }}
+                  >
+                    <div className="cover">
+                      <Image
+                        src={`/screenshots/${site.slug}.png`}
+                        alt={site.name}
+                        width={600}
+                        height={375}
+                        sizes="75vw"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        {site.badge && (
+                          <span
+                            className="px-1.5 py-0.5 rounded-full text-[9px] font-bold"
+                            style={{
+                              background: `${site.badgeColor}15`,
+                              color: site.badgeColor,
+                              border: `1px solid ${site.badgeColor}30`,
+                            }}
+                          >
+                            {site.badge}
+                          </span>
+                        )}
+                        <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-fg-subtle)' }}>
+                          {site.category}
+                        </span>
+                      </div>
+                      <h3 className="font-display text-base font-extrabold tracking-tight mb-0.5">
+                        {site.name}
+                      </h3>
+                      <p className="text-[12px] leading-relaxed line-clamp-2" style={{ color: 'var(--color-fg-muted)' }}>
+                        {site.tagline}
+                      </p>
+                    </div>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -238,8 +288,8 @@ export default function Home() {
           </div>
 
           {/* Categories */}
-          <div className="overflow-x-auto no-scrollbar -mx-4 px-4 mb-8">
-            <div className="flex gap-2 min-w-max sm:min-w-0 sm:flex-wrap">
+          <div className="category-scroll-wrapper overflow-x-auto no-scrollbar -mx-4 px-4 mb-8">
+            <div className="flex gap-2 min-w-max sm:min-w-0 sm:flex-wrap pr-8 sm:pr-0">
               {categories.map((cat) => (
                 <button
                   key={cat}

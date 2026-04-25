@@ -268,6 +268,52 @@ html, body {
   }
 }
 
+/* Mobile featured cards (horizontal scroll) */
+.mobile-featured-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--duration) var(--ease-out);
+}
+.mobile-featured-card:active {
+  box-shadow: var(--shadow-card-hover);
+}
+.mobile-featured-card .cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--color-bg-soft);
+}
+.mobile-featured-card .cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* Scrollable category pills with fade hint */
+.category-scroll-wrapper {
+  position: relative;
+}
+.category-scroll-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -16px;
+  width: 48px;
+  height: 100%;
+  background: linear-gradient(to left, var(--color-bg) 20%, transparent);
+  pointer-events: none;
+}
+@media (min-width: 640px) {
+  .category-scroll-wrapper::after {
+    display: none;
+  }
+}
+
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
