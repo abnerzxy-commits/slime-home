@@ -79,6 +79,18 @@ html, body {
   box-shadow: var(--shadow-card-hover);
   border-color: var(--color-fg-subtle);
 }
+@media (hover: none) {
+  .article-card:active {
+    transform: scale(0.97);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-accent);
+    transition-duration: 80ms;
+  }
+  .article-card:active .cover img {
+    transform: scale(1.03);
+    transition-duration: 200ms;
+  }
+}
 .article-card .cover {
   position: relative;
   width: 100%;
@@ -119,6 +131,14 @@ html, body {
 .article-featured:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-card-hover);
+}
+@media (hover: none) {
+  .article-featured:active {
+    transform: scale(0.98);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-accent);
+    transition-duration: 80ms;
+  }
 }
 .article-featured .cover {
   position: relative;
@@ -190,9 +210,9 @@ html, body {
 .pill {
   display: inline-flex;
   align-items: center;
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 9999px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
   border: 1px solid var(--color-border);
@@ -200,6 +220,14 @@ html, body {
   color: var(--color-fg-muted);
   cursor: pointer;
   transition: all var(--duration) var(--ease-out);
+  min-height: 40px;
+}
+@media (min-width: 640px) {
+  .pill {
+    padding: 6px 12px;
+    font-size: 11px;
+    min-height: unset;
+  }
 }
 .pill:hover {
   border-color: var(--color-fg-muted);
@@ -255,6 +283,30 @@ html, body {
   box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
 }
 
+/* Quick-access tool links */
+.quick-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: all var(--duration) var(--ease-out);
+  white-space: nowrap;
+}
+.quick-tag:hover {
+  background: var(--color-accent);
+  color: white;
+  transform: translateY(-1px);
+}
+.quick-tag:active {
+  transform: scale(0.96);
+}
+
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
@@ -275,10 +327,16 @@ html, body {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow-card);
-  transition: box-shadow var(--duration) var(--ease-out);
+  transition:
+    box-shadow var(--duration) var(--ease-out),
+    border-color var(--duration) var(--ease-out),
+    transform var(--duration) var(--ease-out);
 }
 .mobile-featured-card:active {
   box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-accent);
+  transform: scale(0.97);
+  transition-duration: 80ms;
 }
 .mobile-featured-card .cover {
   position: relative;
@@ -303,9 +361,9 @@ html, body {
   position: absolute;
   top: 0;
   right: -16px;
-  width: 48px;
+  width: 56px;
   height: 100%;
-  background: linear-gradient(to left, var(--color-bg) 20%, transparent);
+  background: linear-gradient(to left, var(--color-bg-soft) 30%, transparent);
   pointer-events: none;
 }
 @media (min-width: 640px) {
@@ -314,8 +372,87 @@ html, body {
   }
 }
 
+/* Scroll hint arrow (mobile only) */
+.scroll-hint {
+  position: absolute;
+  top: 50%;
+  right: -4px;
+  transform: translateY(-50%);
+  color: var(--color-fg-subtle);
+  animation: nudge-right 2s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0.6;
+}
+@keyframes nudge-right {
+  0%, 100% { transform: translateY(-50%) translateX(0); opacity: 0.6; }
+  50% { transform: translateY(-50%) translateX(4px); opacity: 1; }
+}
+
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
+
+/* Skeleton loading pulse for image covers — stops when image loads */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.article-card .cover,
+.article-featured .cover,
+.mobile-featured-card .cover {
+  background: linear-gradient(135deg, var(--color-bg-soft) 0%, var(--color-border) 100%);
+  animation: skeleton-pulse 1.8s ease-in-out infinite;
+}
+.article-card .cover:has(img[data-loaded="true"]),
+.article-featured .cover:has(img[data-loaded="true"]),
+.mobile-featured-card .cover:has(img[data-loaded="true"]) {
+  animation: none;
+  background: var(--color-bg);
+}
+
+/* Back to top button */
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 40;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition:
+    opacity var(--duration) var(--ease-out),
+    transform var(--duration) var(--ease-out);
+  opacity: 0;
+  transform: translateY(12px) scale(0.8);
+  pointer-events: none;
+}
+.back-to-top[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+.back-to-top:active {
+  transform: translateY(0) scale(0.95);
+}
+@media (max-width: 639px) {
+  .back-to-top {
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+  }
+}
 
 /* Line clamp utility */
 .line-clamp-2 {
